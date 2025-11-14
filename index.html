@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Pemesanan Bahan Ajar UT</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <form id="loginForm" class="login-form">
+            
+            <div class="login-logo">
+                <img src="img/pngegg.png" alt="Logo Universitas Terbuka">
+            </div>
+            
+            <h2>Login Aplikasi</h2>
+            <p>Pemesanan Bahan Ajar UT-Daerah</p>
+            
+            <div class="input-group">
+                <label for="email">Email</label>
+                <div class="input-with-icon">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="email" placeholder="contoh: rina@ut.ac.id" required>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-with-icon">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" placeholder="Masukkan password" required>
+                    <i class="fa-solid fa-eye" id="togglePassword"></i>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+            </button>
+            
+            <div class="login-links">
+                <a href="#" id="forgotPasswordLink">Lupa Password?</a>
+                <a href="#" id="registerLink">Daftar Akun</a>
+            </div>
+        </form>
+    </div>
+
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeForgotModal">&times;</span>
+            <h3>Lupa Password</h3>
+            <p>Masukkan email Anda.</p>
+            <form id="forgotForm">
+                <div class="input-group">
+                    <label for="forgotEmail">Email</label>
+                    <input type="email" id="forgotEmail" required>
+                </div>
+                <button type="submit" class="btn">Kirim Instruksi</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeRegisterModal">&times;</span>
+            <h3>Daftar Akun Baru</h3>
+            <form id="registerForm">
+                <div class="input-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="input-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn">Daftar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

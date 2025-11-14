@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Pemesanan Bahan Ajar UT</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="page-container">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <span class="toggle-text">MENU</span>
+                    <i class="fa-solid fa-bars toggle-icon"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-link active">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                
+                <a href="stock.html" class="nav-link">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span class="nav-text">Informasi Bahan Ajar</span>
+                </a>
+                
+                <a href="tracking.html" class="nav-link">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <span class="nav-text">Tracking Pengiriman</span>
+                </a>
+                
+                <span class="nav-section-title">
+                    <span class="nav-text">Laporan</span>
+                </span>
+                
+                <a href="#" class="nav-link">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span class="nav-text">Monitoring Progress DO</span>
+                </a>
+                
+                <a href="#" class="nav-link">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span class="nav-text">Rekap Bahan Ajar</span>
+                </a>
+                
+                <a href="#" class="nav-link">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span class="nav-text">Histori Transaksi</span>
+                </a>
+                
+                <a href="index.html" class="nav-link logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+            <header class="main-header">
+                <h1 id="greeting"></h1>
+            </header>
+            
+            <div class="content-body">
+                <h2>Selamat Datang di Aplikasi Pemesanan</h2>
+                <p>Silakan gunakan menu di sebelah kiri untuk memulai navigasi.</p>
+                </div>
+        </main>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

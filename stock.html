@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Stok Bahan Ajar - Pemesanan Bahan Ajar UT</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="page-container">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <span class="toggle-text">MENU</span>
+                    <i class="fa-solid fa-bars toggle-icon"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                
+                <a href="stock.html" class="nav-link active">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span class="nav-text">Informasi Bahan Ajar</span>
+                </a>
+                
+                <a href="tracking.html" class="nav-link">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <span class="nav-text">Tracking Pengiriman</span>
+                </a>
+                
+                <span class="nav-section-title">
+                    <span class="nav-text">Laporan</span>
+                </span>
+                
+                <a href="#" class="nav-link">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span class="nav-text">Monitoring Progress DO</span>
+                </a>
+                
+                <a href="#" class="nav-link">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span class="nav-text">Rekap Bahan Ajar</span>
+                </a>
+                
+                <a href="#" class="nav-link">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span class="nav-text">Histori Transaksi</span>
+                </a>
+                
+                <a href="index.html" class="nav-link logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content" id="stockApp">
+            <header class="main-header">
+                <h1>Informasi Stok Bahan Ajar</h1>
+            </header>
+            
+            <div class="content-body">
+                <div class="filter-container">
+
+                    <div class="filter-group">
+                        <label for="filterUpbjj">Filter UT-Daerah:</label>
+                        <select id="filterUpbjj" v-model="filterUpbjj">
+                        <option value="">-- Semua UT-Daerah --</option>
+                        <option v-for="upbjj in daftarUpbjj" :key="upbjj" :value="upbjj">
+                            {{ upbjj }}
+                        </option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filterKategori">Filter Kategori:</label>
+                        <select id="filterKategori" v-model="filterKategori">
+                        <option value="">-- Semua Kategori --</option>
+                        <option v-for="kat in daftarKategori" :key="kat" :value="kat">
+                            {{ kat }}
+                        </option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="sortBy">Urutkan Berdasarkan:</label>
+                        <select id="sortBy" v-model="sortBy">
+                        <option value="judul">Judul (A-Z)</option>
+                        <option value="qty">Stok (Sedikit -> Banyak)</option>
+                        <option value="harga">Harga (Murah -> Mahal)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group-check">
+                        <input type="checkbox" id="filterMenipis" v-model="filterHanyaMenipis">
+                        <label for="filterMenipis">Hanya tampilkan stok menipis/kosong</label>
+                    </div>
+
+                    <div class="filter-group">
+                        <button class="btn btn-secondary" @click="resetFilters">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Filter
+                        </button>
+                    </div>
+
+                </div>
+                
+                <div class="add-stock-form-container">
+                    <h4><i class="fa-solid fa-plus"></i> Tambah Stok Baru</h4>
+
+                    <form @submit.prevent="tambahStok">
+
+                        <div class="form-row">
+                        <div class="input-group">
+                            <label for="newKode">Kode Mata Kuliah</label>
+                            <input type="text" id="newKode" v-model="formBaru.kode" placeholder="Mis: EKMA4216">
+                        </div>
+                        <div class="input-group">
+                            <label for="newJudul">Nama Mata Kuliah (Judul)</label>
+                            <input type="text" id="newJudul" v-model="formBaru.judul" placeholder="Mis: Manajemen Keuangan">
+                        </div>
+                        </div>
+
+                        <div class="form-row">
+                        <div class="input-group">
+                            <label for="newKategori">Kategori</label>
+                            <select id="newKategori" v-model="formBaru.kategori">
+                            <option v-for="kat in daftarKategori" :key="kat" :value="kat">
+                                {{ kat }}
+                            </option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="newUpbjj">UT-Daerah</label>
+                            <select id="newUpbjj" v-model="formBaru.upbjj">
+                            <option v-for="upbjj in daftarUpbjj" :key="upbjj" :value="upbjj">
+                                {{ upbjj }}
+                            </option>
+                            </select>
+                        </div>
+                        </div>
+
+                        <div class="form-row">
+                        <div class="input-group">
+                            <label for="newQty">Jumlah Stok (Qty)</label>
+                            <input type="number" id="newQty" v-model.number="formBaru.qty" placeholder="Mis: 100">
+                        </div>
+                        <div class="input-group">
+                            <label for="newSafety">Safety Stok</label>
+                            <input type="number" id="newSafety" v-model.number="formBaru.safety" placeholder="Mis: 20">
+                        </div>
+                        <div class="input-group">
+                            <label for="newHarga">Harga</label>
+                            <input type="number" id="newHarga" v-model.number="formBaru.harga" placeholder="Mis: 65000">
+                        </div>
+                        </div>
+
+                        <div class="form-row">
+                        <div class="input-group">
+                            <label for="newLokasi">Lokasi Rak</label>
+                            <input type="text" id="newLokasi" v-model="formBaru.lokasiRak" placeholder="Mis: R1-A3">
+                        </div>
+                        <div class="input-group">
+                            <label for="newCatatan">Catatan (HTML)</label>
+                            <input type="text" id="newCatatan" v-model="formBaru.catatanHTML" placeholder="Mis: <em>Edisi baru</em>">
+                        </div>
+                        </div>
+
+                        <div class="form-error" v-if="formError">
+                        {{ formError }}
+                        </div>
+
+                        <button type="submit" class="btn">
+                        <i class="fa-solid fa-plus"></i> Tambah ke Stok
+                        </button>
+
+                    </form>
+                </div>
+
+                <h3 class="stock-title">Daftar Stok Saat Ini</h3>
+
+                <div class="stock-card-grid-2-col">
+                
+                    <div class="stock-card" v-for="item in filteredStock" :key="item.kode">
+                        
+                        <img :src="item.cover ? item.cover : 'img/placeholder-book.jpg'" 
+                            :alt="'Cover ' + item.judul" class="stock-card-image">
+                        
+                        <div class="stock-card-body">
+                            <h5>{{ item.judul }}</h5>
+                            
+                            <div class="stock-card-details">
+                                <span><strong>Kode:</strong> {{ item.kode }}</span>
+                                <span><strong>Kategori:</strong> {{ item.kategori }}</span>
+                                <span><strong>UT-Daerah:</strong> {{ item.upbjj }}</span>
+                                <span><strong>Lokasi Rak:</strong> {{ item.lokasiRak }}</span>
+                            </div>
+                            <button class="btn btn-edit" @click="mulaiEdit(item)">
+                                <i class="fa-solid fa-pencil"></i> Edit Stok
+                            </button>
+                            <div class="stock-card-note" v-html="item.catatanHTML"></div>
+
+                            <div class="stock-card-note" v-html="item.catatanHTML"></div>
+                            
+                            <div class="stock-card-footer stok-habis" v-if="item.qty == 0">
+                                <i class="fa-solid fa-times-circle"></i> Stok Kosong
+                            </div>
+                            <div class="stock-card-footer stok-menipis" v-else-if="item.qty < item.safety">
+                                <i class="fa-solid fa-exclamation-triangle"></i> Stok Menipis (Qty: {{ item.qty }})
+                            </div>
+                            <div class="stock-card-footer stok-aman" v-else>
+                                <i class="fa-solid fa-check-circle"></i> Stok Aman (Qty: {{ item.qty }})
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-backdrop" v-if="isEditMode">
+
+                <div class="modal-content">
+                <h4><i class="fa-solid fa-pencil"></i> Edit Stok: {{ editForm.judul }}</h4>
+
+                    <form @submit.prevent="updateStok">
+
+                        <div class="form-row">
+                        <div class="input-group">
+                            <label>Kode Mata Kuliah (Tidak bisa diubah)</label>
+                            <input type="text" v-model="editForm.kode" disabled>
+                        </div>
+                        </div>
+
+                        <div class="form-row">
+                        <div class="input-group">
+                            <label for="editJudul">Nama Mata Kuliah (Judul)</label>
+                            <input type="text" id="editJudul" v-model="editForm.judul">
+                        </div>
+                        </div>
+
+                        <div class="form-row">
+                        <div class="input-group">
+                            <label for="editQty">Jumlah Stok (Qty)</label>
+                            <input type="number" id="editQty" v-model.number="editForm.qty">
+                        </div>
+                        <div class="input-group">
+                            <label for="editSafety">Safety Stok</label>
+                            <input type="number" id="editSafety" v-model.number="editForm.safety">
+                        </div>
+                        </div>
+
+                        <div class="form-row">
+                        <div class="input-group">
+                            <label for="editLokasi">Lokasi Rak</label>
+                            <input type="text" id="editLokasi" v-model="editForm.lokasiRak">
+                        </div>
+                        <div class="input-group">
+                            <label for="editCatatan">Catatan (HTML)</label>
+                            <input type="text" id="editCatatan" v-model="editForm.catatanHTML">
+                        </div>
+                        </div>
+
+                        <div class="form-error" v-if="formErrorEdit">
+                        {{ formErrorEdit }}
+                        </div>
+
+                        <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" @click.prevent="batalEdit">
+                            Batal
+                        </button>
+                        <button type="submit" class="btn">
+                            Update Stok
+                        </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="js/data-tugas2.js"></script>
+    <script src="js/stock-app.js"></script>
+
+</body>
+</html>
